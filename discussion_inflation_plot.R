@@ -74,6 +74,8 @@ save.image('inflation_p.R')
 
 ################### CONTINUE FROM HERE #######################
 
+setwd("//umcsanfsclp01/hev_genepi/genepi/Jasper/Papers0_Thesis/Scripts")
+
 load('inflation_p.R')
 
 library(ggplot2)
@@ -82,36 +84,56 @@ library(ggplot2)
 head(all_p)
 #all_p$lower = 
 
-p1 = ggplot(all_p, aes(qq, p1)) + ylim(0,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
+p1 = ggplot(all_p, aes(qq, p1)) + ylim(-0.1,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
    xlab('Expected quantiles') + ylab('Observed quantiles') + ggtitle('No inflation') + theme_light() + 
    theme(
      plot.title = element_text(size  = 20,hjust = 0.5),
      axis.title = element_text(size = 18),
      axis.text = element_text(size = 16)
-   ) 
-p2 = ggplot(all_p, aes(qq, p3)) + ylim(0,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
-  xlab('Expected quantiles') + ylab('') + ggtitle('Small sample size/case-control imbalance') + theme_light() + 
+   ) + annotate('text', angle = 32, x = 1, y = 2, label = 'Inflated', col = 'red', size = 5) + 
+  annotate('text', angle = 32, x = 1.5, y = 0.9, label = 'Deflated', col = 'red', size = 5) + 
+  geom_segment(aes(x = 0.5, y = 1, xend = 0.3, yend = 1.5),  arrow = arrow(length = unit(0.2, "cm")), size = 1) + 
+  geom_segment(aes(x = 0.7, y = 0.4, xend = 0.9, yend = -0.1),  arrow = arrow(length = unit(0.2, "cm")), size = 1)
+p2 = ggplot(all_p, aes(qq, p3)) + ylim(-0.1,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
+  xlab('Expected quantiles') + ylab('') + ggtitle('Small number of cases') + theme_light() + 
   theme(
     plot.title = element_text(size  = 20,hjust = 0.5),
     axis.title = element_text(size = 18),
     axis.text = element_text(size = 16)
-  ) 
-p3 = ggplot(all_p, aes(qq, p2)) + ylim(0,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
+  ) + annotate('text', angle = 32, x = 1, y = 2, label = 'Inflated', col = 'red', size = 5) + 
+  annotate('text', angle = 32, x = 1.5, y = 0.9, label = 'Deflated', col = 'red', size = 5) + 
+  geom_segment(aes(x = 0.5, y = 1, xend = 0.3, yend = 1.5),  arrow = arrow(length = unit(0.2, "cm")), size = 1) + 
+  geom_segment(aes(x = 0.7, y = 0.4, xend = 0.9, yend = -0.1),  arrow = arrow(length = unit(0.2, "cm")), size = 1)
+p3 = ggplot(all_p, aes(qq, p2)) + ylim(-0.1,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
   xlab('Expected quantiles') + ylab('') + ggtitle('Relatedness') + theme_light() + 
   theme(
     plot.title = element_text(size  = 20,hjust = 0.5),
     axis.title = element_text(size = 18),
     axis.text = element_text(size = 16)
-  ) 
+  ) + annotate('text', angle = 32, x = 1, y = 2, label = 'Inflated', col = 'red', size = 5) + 
+  annotate('text', angle = 32, x = 1.5, y = 0.9, label = 'Deflated', col = 'red', size = 5) + 
+  geom_segment(aes(x = 0.5, y = 1, xend = 0.3, yend = 1.5),  arrow = arrow(length = unit(0.2, "cm")), size = 1) + 
+  geom_segment(aes(x = 0.7, y = 0.4, xend = 0.9, yend = -0.1),  arrow = arrow(length = unit(0.2, "cm")), size = 1)
   
 library(gridExtra)
   
 png("//umcsanfsclp01/hev_genepi/genepi/Jasper/Papers0_Thesis/Figures/inflation.png",
-    width = 15, height = 5, units = 'in', res = 1200)
+    width = 13, height = 4, units = 'in', res = 1200)
 
 grid.arrange(p1,p2,p3, nrow=1)
 
 dev.off()
 
-### add confidence intervals
+### add annotation?
+
+ggplot(all_p, aes(qq, p2)) + ylim(-0.1,8) + geom_abline(intercept = 0, slope = 1, col = 'red') + geom_point() +
+  xlab('Expected quantiles') + ylab('') + ggtitle('Relatedness') + theme_light() + 
+  theme(
+    plot.title = element_text(size  = 20,hjust = 0.5),
+    axis.title = element_text(size = 18),
+    axis.text = element_text(size = 16)
+  ) + annotate('text', angle = 32, x = 1, y = 2, label = 'Inflated', col = 'red', size = 5) + 
+  annotate('text', angle = 32, x = 1.5, y = 0.9, label = 'Deflated', col = 'red', size = 5) + 
+  geom_segment(aes(x = 0.5, y = 1, xend = 0.3, yend = 1.5),  arrow = arrow(length = unit(0.2, "cm")), size = 1) + 
+  geom_segment(aes(x = 0.7, y = 0.4, xend = 0.9, yend = -0.1),  arrow = arrow(length = unit(0.2, "cm")), size = 1)
 

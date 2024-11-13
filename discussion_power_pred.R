@@ -171,13 +171,14 @@ for(j in 1:(vals*11)){
   frac = 0.8
   frail = rnorm(N)
   
-  liab = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab = scale(liab)    # This is already the quantitative phenotype
-  liab2 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab2 = scale(liab2) #2nd recurrence
-  liab3 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab3 = scale(liab3) #3rd recurrence
-  liab4 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab4 = scale(liab4) #4th recurrence
-  liab5 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab5 = scale(liab5) #5nd recurrence
-  liab6 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab6 = scale(liab6) #6rd recurrence
-  liab7 = her*scale(g_liab) + (1-her)*scale(frac * rnorm(N) + (1-frac) * frail); liab7 = scale(liab7) #7th recurrence
+  liab = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab = scale(liab)    # This is already the quantitative phenotype
+  
+  liab2 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab2 = scale(liab2) #2nd recurrence
+  liab3 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab3 = scale(liab3) #3rd recurrence
+  liab4 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab4 = scale(liab4) #4th recurrence
+  liab5 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab5 = scale(liab5) #5nd recurrence
+  liab6 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab6 = scale(liab6) #6rd recurrence
+  liab7 = sqrt(her)*scale(g_liab) + sqrt((1-her))*scale(frac * rnorm(N) + (1-frac) * frail); liab7 = scale(liab7) #7th recurrence
   
   # Binary phenotype
   Y_bin = rbinom(N, 1, prob = 1/(1+exp(-liab + 1)))          # Approx 30% cases
@@ -361,6 +362,7 @@ for(i in 1:4){
   )
 }
 
+plots[[1]] = plots[[1]] + annotate('text', x = -2.5,y = 45, label  = 'A', size = 10) + xlim(c(-3.5,3.5))
 plots[[2]] = plots[[2]] + scale_x_continuous(breaks = c(0,1))
 plots[[3]] = plots[[3]] + ggtitle('Time-to-event')
 plots[[4]] = plots[[4]] + ggtitle('Recurrent event')
@@ -372,9 +374,11 @@ top <- textGrob(expression("Phenotype distribution"), gp = gpar(fontsize = 17), 
 hist = grid.arrange(plots[[1]], plots[[2]],plots[[3]],plots[[4]], nrow = 2,
                     top = top)
 
-#save.image('Prediction_part.R')
+save.image('Prediction_part.R')
 
 ############## Combine all plots!!! ###############
+
+setwd("//umcsanfsclp01/hev_genepi/genepi/Jasper/Papers0_Thesis/Scripts")
 
 load('Prediction_part.R')
 
@@ -394,11 +398,11 @@ pred = pred + theme(
   axis.text = element_text(size = 12),
   legend.text = element_text(size = 16),
   legend.title = element_text(size = 16)
-)
+) + annotate('text', x = 0.1, y = 0.9, label = 'C', size = 10)
 assoc = assoc + theme(
   axis.title = element_text(size = 14),
   axis.text = element_text(size = 12)
-)
+) + annotate('text', x = 0.1, y = 50, label = 'B', size = 10)
 
 legend = get_only_legend(pred)
 
@@ -408,7 +412,7 @@ legend = get_only_legend(pred)
 assoc = assoc + theme(legend.position = 'none',
                       plot.margin = unit(c(0.7,0.7,0.7,0.7), "cm"))
 pred = pred + theme(legend.position = 'none',
-                    plot.margin = unit(c(0.7,0.7,0.7,0.7), "cm"))
+                    plot.margin = unit(c(0.7,0.7,0.7,0.7), "cm")) + xlab('Heritability of Linear Predictor')
 
 top <- textGrob(expression("Statistical power"), gp = gpar(fontsize = 17), hjust = 0.4)
 assoc_new = grid.arrange(assoc, nrow = 1,
